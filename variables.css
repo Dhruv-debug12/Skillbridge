@@ -1,0 +1,58 @@
+:root {
+  /* Colors */
+  --color-bg: #F5F2ED;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #EDE9E2;
+  --color-text: #1A1714;
+  --color-text-muted: #6B6460;
+  --color-accent: #C84B31;
+  --color-accent-2: #2B4C3F;
+  --color-border: #D9D3CA;
+  --color-yellow: #E8A838;
+
+  /* Typography Scale */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.25rem;    /* 20px */
+  --text-xl: 1.75rem;    /* 28px */
+  --text-2xl: 2.5rem;    /* 40px */
+  --text-3xl: 3.5rem;    /* 56px */
+  --text-4xl: 4.5rem;    /* 72px */
+
+  /* Fonts */
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Layout */
+  --layout-max-width: 1280px;
+
+  /* Effects */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-base: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-hover: 0 8px 32px rgba(200, 75, 49, 0.06);
+  
+  --radius-sm: 2px;
+  --radius-base: 4px;
+  
+  /* Transitions */
+  --transition-fast: 0.15s ease-out;
+  --transition-base: 0.25s ease-out;
+}
+
+[data-theme="dark"] {
+  --color-bg: #12100E;
+  --color-surface: #1E1C1A;
+  --color-surface-2: #2A2825;
+  --color-text: #EAE6E1;
+  --color-text-muted: #9E9892;
+  --color-accent: #DA5C43;
+  --color-accent-2: #3E6B58;
+  --color-border: #3A3633;
+  --color-yellow: #E8B44A;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-base: 0 4px 24px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 8px 32px rgba(218, 92, 67, 0.2);
+}

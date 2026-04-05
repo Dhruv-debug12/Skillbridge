@@ -1,0 +1,462 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employer Dashboard | SkillBridge</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages/dashboard.css">
+  <script src="js/theme.js"></script>
+</head>
+<body class="fade-in">
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-brand" style="display:flex;align-items:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#C89D42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:0.5rem;flex-shrink:0;">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <path d="M8 14v-2"></path>
+          <path d="M12 14v-5"></path>
+          <path d="M16 14v-8"></path>
+          <polyline points="5 13 9 9 12 11 17 5"></polyline>
+          <polyline points="13 5 17 5 17 9"></polyline>
+        </svg>
+SkillBridge</a>
+      <div class="nav-actions">
+        <a href="worker-board.html" class="btn btn-outline" style="margin-right:0.5rem;">Find Workers</a>
+        <span class="text-sm" style="font-weight:600;margin-right:1rem;" id="user-display-name">Employer</span>
+        <button id="logout-btn" class="btn btn-text">Logout</button>
+      </div>
+      <button class="theme-toggle" aria-label="Toggle Theme"></button>
+    </div>
+  </nav>
+
+  <div class="dashboard-layout">
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <a href="#overview"     class="sidebar-link active">Overview</a>
+        <a href="#post-job"     class="sidebar-link">Post a Job</a>
+        <a href="#my-listings"  class="sidebar-link">My Listings</a>
+        <a href="#applications" class="sidebar-link">Applications</a>
+      </nav>
+    </aside>
+
+    <main class="dashboard-content">
+
+      <!-- â”€â”€ OVERVIEW â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <section id="overview">
+        <h1 class="text-3xl font-display mb-4">Employer Overview</h1>
+        <div class="grid grid-4 mb-4">
+          <div class="stat-card">
+            <h4>Active Jobs</h4>
+            <div class="text-3xl" id="stat-active-jobs">â€”</div>
+          </div>
+          <div class="stat-card">
+            <h4>Total Applicants</h4>
+            <div class="text-3xl" id="stat-total-applications">â€”</div>
+          </div>
+          <div class="stat-card">
+            <h4>Shortlisted</h4>
+            <div class="text-3xl" id="stat-shortlisted">â€”</div>
+          </div>
+          <div class="stat-card">
+            <h4>Hired</h4>
+            <div class="text-3xl" id="stat-hired">â€”</div>
+          </div>
+        </div>
+
+        <h2 class="text-xl mb-2 font-display">Recent Activity</h2>
+        <div class="card">
+          <p class="text-muted" id="activity-text">Loading your recent activity...</p>
+        </div>
+      </section>
+
+      <!-- â”€â”€ POST JOB â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <section id="post-job" style="display:none;">
+        <h1 class="text-3xl font-display mb-4">Post a New Job</h1>
+        <div class="card" style="max-width:620px;">
+          <div id="post-job-success" style="display:none;text-align:center;padding:2rem;">
+            <div style="font-size:3rem;margin-bottom:1rem;">ðŸŽ‰</div>
+            <h3 class="font-display text-xl mb-1">Job Posted!</h3>
+            <p class="text-muted mb-2">Your listing is now live on SkillBridge.</p>
+            <button class="btn btn-primary" onclick="postAnotherJob()">Post Another Job</button>
+          </div>
+          <form id="post-job-form">
+            <div class="form-group">
+              <label class="form-label">Job Title *</label>
+              <input type="text" name="title" class="form-input" placeholder="e.g. Senior Electrician Needed" required>
+            </div>
+            <div class="grid" style="grid-template-columns:1fr 1fr;gap:1rem;">
+              <div class="form-group">
+                <label class="form-label">Category *</label>
+                <select name="trade_category" class="form-select" required>
+                  <option value="Electrician">Electrician</option>
+                  <option value="Plumber">Plumber</option>
+                  <option value="Carpenter">Carpenter</option>
+                  <option value="Mason">Mason</option>
+                  <option value="Painter">Painter</option>
+                  <option value="Driver">Driver</option>
+                  <option value="Welder">Welder</option>
+                  <option value="Domestic Helper">Domestic Helper</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Location *</label>
+                <input type="text" name="location" class="form-input" placeholder="e.g. Austin, TX" required>
+              </div>
+            </div>
+            <div class="grid" style="grid-template-columns:1fr 1fr;gap:1rem;">
+              <div class="form-group">
+                <label class="form-label">Pay Amount *</label>
+                <input type="number" name="pay_amount" class="form-input" placeholder="e.g. 45" min="1" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pay Type *</label>
+                <select name="pay_type" class="form-select" required>
+                  <option value="hourly">Hourly ($/hr)</option>
+                  <option value="daily">Daily ($/day)</option>
+                  <option value="fixed">Fixed Price ($)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Job Description *</label>
+              <textarea name="description" class="form-textarea" rows="4" placeholder="Describe the role, duration, and work environment..." required></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Requirements</label>
+              <textarea name="requirements" class="form-textarea" rows="2" placeholder="e.g. 5+ years experience, own tools required..."></textarea>
+            </div>
+            <label style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;cursor:pointer;font-weight:600;">
+              <input type="checkbox" name="is_urgent" style="width:18px;height:18px;">
+              ðŸ”¥ Mark as Urgent Hire
+            </label>
+            <div id="post-job-error" style="color:var(--color-accent);font-size:var(--text-sm);margin-bottom:1rem;"></div>
+            <button type="submit" class="btn btn-primary" style="width:100%;" id="post-job-btn">Create Listing</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- â”€â”€ MY LISTINGS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <section id="my-listings" style="display:none;">
+        <div class="flex-between mb-4" style="align-items:center;">
+          <h1 class="text-3xl font-display">My Listings</h1>
+          <a href="#post-job" class="btn btn-primary sidebar-link-anchor">+ Post New Job</a>
+        </div>
+        <div class="table-container">
+          <table class="dashboard-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Pay</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="listings-tbody">
+              <tr><td colspan="6" class="text-center text-muted" style="padding:2rem;">Loading listings...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- â”€â”€ APPLICATIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
+      <section id="applications" style="display:none;">
+        <h1 class="text-3xl font-display mb-4">Applications</h1>
+        <p class="text-muted mb-3" id="apps-intro">Click a job listing in "My Listings" to view its applicants, or select below:</p>
+        <div id="apps-container">
+          <div id="job-selector" style="margin-bottom:1.5rem;">
+            <label class="form-label">Select Job to View Applicants</label>
+            <select id="job-select-dropdown" class="form-select" style="max-width:400px;">
+              <option value="">â€” Select a job â€”</option>
+            </select>
+          </div>
+          <div class="table-container">
+            <table class="dashboard-table">
+              <thead>
+                <tr>
+                  <th>Applicant</th>
+                  <th>Trade</th>
+                  <th>Experience</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="applications-tbody">
+                <tr><td colspan="5" class="text-center text-muted" style="padding:2rem;">Select a job to view applicants.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script type="module">
+    import { auth } from './js/auth.js';
+    import { db, supabase } from './js/supabase.js';
+
+    let currentUser  = null;
+    let employerJobs = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const result = await auth.requireAuthWithRole('employer');
+      if (!result) return;
+
+      currentUser = result.user;
+      document.getElementById('user-display-name').textContent = result.profile.full_name || 'Employer';
+      document.getElementById('logout-btn').addEventListener('click', () => auth.logout());
+
+      setupTabs();
+      await loadDashboardData();
+    });
+
+    function setupTabs() {
+      const links    = document.querySelectorAll('.sidebar-link');
+      const sections = document.querySelectorAll('main > section');
+
+      links.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          links.forEach(l => l.classList.remove('active'));
+          sections.forEach(s => s.style.display = 'none');
+          link.classList.add('active');
+          const target = link.getAttribute('href').replace('#', '');
+          const section = document.getElementById(target);
+          if (section) section.style.display = 'block';
+          // Load listings/apps on tab switch
+          if (target === 'my-listings') loadListings();
+          if (target === 'applications') loadApplicationsSection();
+        });
+      });
+
+      // "Post New Job" quick link in listings
+      document.querySelector('.sidebar-link-anchor')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.querySelector('[href="#post-job"]').click();
+      });
+    }
+
+    async function loadDashboardData() {
+      try {
+        employerJobs = await db.getEmployerJobs(currentUser.id);
+        const activeJobs = employerJobs.filter(j => j.status === 'active');
+
+        // Load all applications for all jobs
+        let totalApps = 0, shortlisted = 0, hired = 0;
+        for (const job of employerJobs) {
+          const apps = await db.getJobApplications(job.id);
+          totalApps += apps.length;
+          shortlisted += apps.filter(a => a.status === 'shortlisted').length;
+          hired       += apps.filter(a => a.status === 'hired').length;
+        }
+
+        document.getElementById('stat-active-jobs').textContent         = activeJobs.length;
+        document.getElementById('stat-total-applications').textContent  = totalApps;
+        document.getElementById('stat-shortlisted').textContent         = shortlisted;
+        document.getElementById('stat-hired').textContent               = hired;
+
+        const activityText = employerJobs.length > 0
+          ? `You have <strong>${activeJobs.length}</strong> active job(s) with <strong>${totalApps}</strong> total application(s). Last listing: <em>${employerJobs[0]?.title || 'N/A'}</em>.`
+          : `No listings yet. <a href="#post-job" class="text-accent sidebar-link" style="font-weight:600;">Post your first job â†’</a>`;
+        document.getElementById('activity-text').innerHTML = activityText;
+
+        // Inject into job dropdown for applications tab
+        const dropdown = document.getElementById('job-select-dropdown');
+        employerJobs.forEach(job => {
+          const opt = document.createElement('option');
+          opt.value       = job.id;
+          opt.textContent = job.title;
+          dropdown.appendChild(opt);
+        });
+        dropdown.addEventListener('change', () => loadJobApplications(dropdown.value));
+
+      } catch (err) {
+        console.error('Dashboard load error:', err);
+        document.getElementById('activity-text').textContent = 'Error loading data. Please refresh.';
+      }
+    }
+
+    async function loadListings() {
+      const tbody = document.getElementById('listings-tbody');
+      tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:2rem;">Loading...</td></tr>`;
+      try {
+        if (employerJobs.length === 0) employerJobs = await db.getEmployerJobs(currentUser.id);
+
+        if (employerJobs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted" style="padding:2rem;">No listings yet. <a href="#post-job" class="sidebar-link text-accent" style="font-weight:600;">Post your first job â†’</a></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = employerJobs.map(job => `
+          <tr>
+            <td>
+              <strong>${job.title}</strong><br>
+              <span class="text-xs text-muted">${new Date(job.created_at).toLocaleDateString()}</span>
+            </td>
+            <td><span class="badge">${job.trade_category}</span></td>
+            <td>${job.location}</td>
+            <td class="font-mono" style="font-weight:600;">$${job.pay_amount} / ${job.pay_type}</td>
+            <td>
+              <span class="badge ${job.status === 'active' ? 'badge-success' : ''}">${job.status}</span>
+              ${job.is_urgent ? `<span class="badge badge-accent" style="margin-left:0.25rem;font-size:0.65rem;">URGENT</span>` : ''}
+            </td>
+            <td style="white-space:nowrap;">
+              <button class="btn btn-text" style="padding:0.25rem 0.5rem;font-size:0.8rem;" onclick="viewJobApps('${job.id}')">
+                View Applicants
+              </button>
+              <button class="btn btn-text" style="padding:0.25rem 0.5rem;font-size:0.8rem;color:var(--color-accent);" onclick="closeJob('${job.id}')">
+                ${job.status === 'active' ? 'Close' : 'Reopen'}
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="color:var(--color-accent);padding:1rem;">Error loading listings.</td></tr>`;
+      }
+    }
+
+    window.viewJobApps = function(jobId) {
+      document.querySelector('[href="#applications"]').click();
+      document.getElementById('job-select-dropdown').value = jobId;
+      loadJobApplications(jobId);
+    };
+
+    window.closeJob = async function(jobId) {
+      const job = employerJobs.find(j => j.id === jobId);
+      if (!job) return;
+      const newStatus = job.status === 'active' ? 'closed' : 'active';
+      try {
+        await db.updateJob(jobId, { status: newStatus });
+        job.status = newStatus;
+        loadListings();
+        await loadDashboardData();
+      } catch (err) {
+        alert('Failed to update job status: ' + err.message);
+      }
+    };
+
+    async function loadApplicationsSection() {
+      // Nothing needed until dropdown is changed
+    }
+
+    async function loadJobApplications(jobId) {
+      if (!jobId) return;
+      const tbody = document.getElementById('applications-tbody');
+      tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted" style="padding:2rem;">Loading applicants...</td></tr>`;
+
+      try {
+        const apps = await db.getJobApplications(jobId);
+
+        if (apps.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted" style="padding:2rem;">No applications yet for this job.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = apps.map(app => {
+          const name = app.worker_profiles?.profiles?.full_name || 'Unknown Worker';
+          const initials = name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+          const trade = app.worker_profiles?.trade || 'â€”';
+          const exp   = app.worker_profiles?.experience_years ?? 'â€”';
+          const statusColors = { pending: '', shortlisted: 'badge-success', rejected: 'badge-accent', hired: 'badge-success' };
+
+          return `
+            <tr>
+              <td style="display:flex;align-items:center;gap:0.75rem;">
+                <div class="avatar" style="width:36px;height:36px;font-size:0.8rem;flex-shrink:0;">${initials}</div>
+                <div>
+                  <strong>${name}</strong><br>
+                  <span class="text-xs text-muted">${new Date(app.applied_at).toLocaleDateString()}</span>
+                </div>
+              </td>
+              <td>${trade}</td>
+              <td>${exp} yrs</td>
+              <td><span class="badge ${statusColors[app.status] || ''}">${app.status.toUpperCase()}</span></td>
+              <td style="white-space:nowrap;">
+                <a href="worker-profile.html?id=${app.worker_id}" class="btn btn-outline" style="padding:0.25rem 0.5rem;font-size:0.8rem;">Profile</a>
+                <select onchange="updateAppStatus('${app.id}', this.value)" style="margin-left:0.5rem;padding:0.25rem 0.5rem;border-radius:var(--radius-sm);border:1px solid var(--color-border);background:var(--color-surface);font-size:0.8rem;cursor:pointer;">
+                  <option value="" disabled selected>Change Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="shortlisted">Shortlist</option>
+                  <option value="hired">Hire âœ“</option>
+                  <option value="rejected">Reject</option>
+                </select>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" style="color:var(--color-accent);padding:1rem;">Error loading applicants: ${err.message}</td></tr>`;
+      }
+    }
+
+    window.updateAppStatus = async function(appId, status) {
+      if (!status) return;
+      try {
+        await db.updateApplicationStatus(appId, status);
+        // Reload current job applications
+        const jobId = document.getElementById('job-select-dropdown').value;
+        await loadJobApplications(jobId);
+        await loadDashboardData();
+      } catch (err) {
+        alert('Failed to update status: ' + err.message);
+      }
+    };
+
+    // Post Job Form
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('post-job-form');
+      if (!form) return;
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn    = document.getElementById('post-job-btn');
+        const errDiv = document.getElementById('post-job-error');
+        btn.disabled = true;
+        btn.textContent = 'Posting...';
+        errDiv.textContent = '';
+
+        const formData = new FormData(form);
+        try {
+          await db.createJob({
+            employer_id:    currentUser.id,
+            title:          formData.get('title'),
+            trade_category: formData.get('trade_category'),
+            location:       formData.get('location'),
+            pay_amount:     parseFloat(formData.get('pay_amount')),
+            pay_type:       formData.get('pay_type'),
+            description:    formData.get('description'),
+            requirements:   formData.get('requirements') || null,
+            is_urgent:      formData.get('is_urgent') === 'on',
+            status:         'active',
+          });
+
+          form.reset();
+          form.style.display = 'none';
+          document.getElementById('post-job-success').style.display = 'block';
+          employerJobs = await db.getEmployerJobs(currentUser.id);
+          await loadDashboardData();
+
+        } catch (err) {
+          errDiv.textContent = 'Error: ' + err.message;
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Create Listing';
+        }
+      });
+    });
+
+    window.postAnotherJob = function() {
+      document.getElementById('post-job-success').style.display = 'none';
+      document.getElementById('post-job-form').style.display = 'block';
+    };
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillBridge | Authentication</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages/auth.css">
+  <script src="js/theme.js"></script>
+</head>
+
+<body class="fade-in">
+  <div class="auth-layout">
+    <!-- Left Side: Brand -->
+    <div class="auth-brand">
+      <div class="auth-brand-content">
+        <a href="index.html" class="nav-brand" style="color: var(--color-surface); display: flex; align-items: center;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#E8B44A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:0.5rem;flex-shrink:0;">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <path d="M8 14v-2"></path>
+            <path d="M12 14v-5"></path>
+            <path d="M16 14v-8"></path>
+            <polyline points="5 13 9 9 12 11 17 5"></polyline>
+            <polyline points="13 5 17 5 17 9"></polyline>
+          </svg>
+          SkillBridge
+        </a>
+        <div class="auth-quote">
+          <p class="font-display text-3xl">"The foundation of every great project is the right people."</p>
+          <div class="text-surface-2 mt-4 text-lg">â€” Join the local network of trusted professionals.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: Forms -->
+    <div class="auth-forms-container">
+      <div class="auth-forms-wrapper">
+
+        <!-- Toggle Tabs -->
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-target="login">Login</button>
+          <button class="auth-tab" data-target="signup">Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form active">
+          <h2 class="text-2xl mb-1 mt-1">Welcome back</h2>
+          <p class="text-muted mb-4">Enter your details to access your account.</p>
+
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-input" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Sign In</button>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signup-form" class="auth-form">
+          <h2 class="text-2xl mb-1 mt-1">Create an account</h2>
+          <p class="text-muted mb-4">Join SkillBridge to connect with top local talent or employers.</p>
+
+          <div class="form-group">
+            <label class="form-label">I am a...</label>
+            <div class="role-selector">
+              <label class="role-card">
+                <input type="radio" name="role" value="worker" checked>
+                <div class="role-card-inner">
+                  <strong>Worker</strong>
+                  <span class="text-sm text-muted">Looking for jobs</span>
+                </div>
+              </label>
+              <label class="role-card">
+                <input type="radio" name="role" value="employer">
+                <div class="role-card-inner">
+                  <strong>Employer</strong>
+                  <span class="text-sm text-muted">Hiring talent</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Common Fields -->
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-input" minlength="6" required>
+          </div>
+
+          <!-- Worker Fields (Default visible) -->
+          <div id="worker-fields">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" name="full_name" class="form-input">
+            </div>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Trade</label>
+                <select name="trade" class="form-select">
+                  <option value="Electrician">Electrician</option>
+                  <option value="Plumber">Plumber</option>
+                  <option value="Carpenter">Carpenter</option>
+                  <option value="Mason">Mason</option>
+                  <option value="Painter">Painter</option>
+                  <option value="Driver">Driver</option>
+                  <option value="Welder">Welder</option>
+                  <option value="Domestic Helper">Domestic Helper</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label class="form-label">Years of Experience</label>
+                <input type="number" name="experience_years" class="form-input" min="0">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Location (City, State)</label>
+              <input type="text" name="worker_location" class="form-input" placeholder="e.g. Austin, TX">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" name="worker_phone" class="form-input">
+            </div>
+          </div>
+
+          <!-- Employer Fields (Hidden by default) -->
+          <div id="employer-fields" style="display: none;">
+            <div class="form-group">
+              <label class="form-label">Company Name</label>
+              <input type="text" name="company_name" class="form-input">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Industry</label>
+              <input type="text" name="industry" class="form-input" placeholder="e.g. Construction">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Location (City, State)</label>
+              <input type="text" name="employer_location" class="form-input" placeholder="e.g. Austin, TX">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Phone</label>
+              <input type="tel" name="employer_phone" class="form-input">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Create Account</button>
+        </form>
+
+        <!-- Error/Success Message Container -->
+        <div id="auth-message" class="mt-4" style="text-align: center; font-weight: 500;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth } from './js/auth.js';
+
+    // Parse URL params for role pre-selection
+    const urlParams = new URLSearchParams(window.location.search);
+    const roleParam = urlParams.get('role');
+
+    // Tab Switching
+    const tabs = document.querySelectorAll('.auth-tab');
+    const forms = document.querySelectorAll('.auth-form');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        forms.forEach(f => f.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById(`${tab.dataset.target}-form`).classList.add('active');
+
+        // Clear messages
+        document.getElementById('auth-message').textContent = '';
+      });
+    });
+
+    // Role Switching Logic
+    const roleRadios = document.querySelectorAll('input[name="role"]');
+    const workerFields = document.getElementById('worker-fields');
+    const employerFields = document.getElementById('employer-fields');
+
+    function toggleRoleFields(role) {
+      if (role === 'worker') {
+        workerFields.style.display = 'block';
+        employerFields.style.display = 'none';
+        // HTML5 validation toggles
+        setRequired(workerFields, true);
+        setRequired(employerFields, false);
+      } else {
+        workerFields.style.display = 'none';
+        employerFields.style.display = 'block';
+        setRequired(workerFields, false);
+        setRequired(employerFields, true);
+      }
+    }
+
+    function setRequired(container, isRequired) {
+      container.querySelectorAll('input, select').forEach(el => el.required = isRequired);
+    }
+
+    roleRadios.forEach(radio => {
+      radio.addEventListener('change', (e) => toggleRoleFields(e.target.value));
+    });
+
+    // If roleParam is provided, switch to signup tab
+    if (roleParam) {
+      document.querySelector('[data-target="signup"]').click();
+      const roleRadio = document.querySelector(`input[name="role"][value="${roleParam}"]`);
+      if (roleRadio) roleRadio.checked = true;
+      toggleRoleFields(roleParam);
+    } else {
+      // Init default required fields properly
+      toggleRoleFields(document.querySelector('input[name="role"]:checked').value);
+    }
+
+    // Form Submission Handlers
+    const msgDiv = document.getElementById('auth-message');
+    const showMessage = (msg, isError = false) => {
+      msgDiv.textContent = msg;
+      msgDiv.style.color = isError ? 'var(--color-accent)' : 'var(--color-accent-2)';
+    };
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.disabled = true;
+      btn.textContent = "Signing In...";
+
+      const formData = new FormData(e.target);
+      try {
+        await auth.login(formData.get('email'), formData.get('password'));
+        showMessage("Login successful! Redirecting...");
+        const userAndProfile = await auth.requireAuthWithRole();
+        if (userAndProfile) {
+          window.location.href = 'index.html';
+        }
+      } catch (err) {
+        showMessage(err.message || "Failed to sign in.", true);
+        btn.disabled = false;
+        btn.textContent = "Sign In";
+      }
+    });
+
+    document.getElementById('signup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.disabled = true;
+      btn.textContent = "Creating Account...";
+
+      const formData = new FormData(e.target);
+      const role = formData.get('role');
+
+      const profileData = {
+        role,
+        full_name: formData.get('full_name'),
+        trade: formData.get('trade'),
+        experience_years: formData.get('experience_years'),
+        location: role === 'worker' ? formData.get('worker_location') : formData.get('employer_location'),
+        phone: role === 'worker' ? formData.get('worker_phone') : formData.get('employer_phone'),
+        company_name: formData.get('company_name'),
+        industry: formData.get('industry')
+      };
+
+      try {
+        await auth.signup(formData.get('email'), formData.get('password'), profileData);
+        showMessage("Account created successfully! Redirecting...");
+        window.location.href = 'index.html';
+      } catch (err) {
+        showMessage(err.message || "Failed to create account.", true);
+        btn.disabled = false;
+        btn.textContent = "Create Account";
+      }
+    });
+  </script>
+</body>
+
+</html>

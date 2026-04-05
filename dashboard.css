@@ -1,0 +1,82 @@
+/* css/pages/dashboard.css */
+.stat-card {
+  padding: 1.5rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast);
+}
+.stat-card:hover {
+  box-shadow: var(--shadow-base);
+}
+
+.stat-card h4 {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.stat-card .text-3xl {
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* Dashboard tables */
+.table-container {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard-table th, .dashboard-table td {
+  padding: 1.25rem 1.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dashboard-table th {
+  background-color: var(--color-surface-2);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashboard-table tr:last-child td {
+  border-bottom: none;
+}
+
+.dashboard-table tbody tr {
+  transition: background-color var(--transition-fast);
+}
+
+.dashboard-table tbody tr:hover {
+  background-color: var(--color-bg);
+}
+
+/* Progress bar */
+.progress-bar-bg {
+  height: 8px;
+  background-color: var(--color-border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--color-accent);
+  width: 0%;
+  transition: width 1s ease-out;
+}

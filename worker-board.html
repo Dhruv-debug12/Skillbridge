@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillBridge | Find Workers</title>
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/pages/job-board.css">
+  <script src="js/theme.js"></script>
+</head>
+<body class="fade-in">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-brand" style="display:flex;align-items:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#C89D42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:0.5rem;flex-shrink:0;">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <path d="M8 14v-2"></path>
+          <path d="M12 14v-5"></path>
+          <path d="M16 14v-8"></path>
+          <polyline points="5 13 9 9 12 11 17 5"></polyline>
+          <polyline points="13 5 17 5 17 9"></polyline>
+        </svg>
+SkillBridge</a>
+      <div class="nav-links">
+        <a href="job-board.html" class="nav-link">Find Jobs</a>
+        <a href="worker-board.html" class="nav-link active">Find Workers</a>
+        <a href="index.html#how-it-works" class="nav-link">How it Works</a>
+        <a href="index.html#trades" class="nav-link">Trades</a>
+      </div>
+      <div class="nav-actions" id="nav-actions">
+        <!-- JS inserts auth state here -->
+        <a href="auth.html" class="btn btn-text">Sign In</a>
+        <a href="auth.html?role=employer" class="btn btn-primary">Post a Job</a>
+      </div>
+      <button class="theme-toggle" aria-label="Toggle Theme"></button>
+    </div>
+  </nav>
+
+  <main class="page-wrapper container">
+    <div class="job-board-layout">
+      <!-- Sidebar Filters -->
+      <aside class="filters-sidebar section-tight">
+        <h3 class="mb-2 text-xl font-display">Filters</h3>
+        <form id="filter-form">
+          <div class="form-group">
+            <label class="form-label">Search</label>
+            <input type="text" name="search" class="form-input" placeholder="Location...">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Trade Category</label>
+            <select name="trade" class="form-select">
+              <option value="">All Trades</option>
+              <option value="Electrician">Electrician</option>
+              <option value="Plumber">Plumber</option>
+              <option value="Carpenter">Carpenter</option>
+              <option value="Mason">Mason</option>
+              <option value="Painter">Painter</option>
+              <option value="Driver">Driver</option>
+              <option value="Welder">Welder</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width:100%;">Apply Filters</button>
+        </form>
+      </aside>
+
+      <!-- Main Results -->
+      <section class="results-content section-tight">
+        <div class="flex-between mb-4">
+          <div>
+            <h1 class="text-3xl font-display mb-1">Available Workers</h1>
+            <p class="text-muted"><span id="results-count">0</span> workers found matching your criteria</p>
+          </div>
+        </div>
+
+        <div class="grid grid-2" id="workers-list">
+          <!-- Workers injected via JS -->
+          <div class="skeleton" style="height:200px; width:100%;"></div>
+          <div class="skeleton" style="height:200px; width:100%;"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Slide-in Drawer -->
+  <div class="drawer-overlay" id="job-drawer-overlay">
+    <div class="drawer-panel" id="job-drawer">
+      <button class="drawer-close" id="job-drawer-close">&times;</button>
+      <div id="drawer-content">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/worker-board.js"></script>
+</body>
+</html>
+

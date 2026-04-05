@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillBridge | Search Jobs by Map</title>
+  <meta name="description" content="Find local skilled trade jobs near you using our interactive map search.">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/react-premium.css">
+  <link rel="stylesheet" href="css/pages/map-search.css">
+  <script src="js/theme.js"></script>
+</head>
+
+<body class="fade-in map-search-body">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="nav-brand" style="display:flex;align-items:center;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#C89D42"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:0.5rem;flex-shrink:0;">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <path d="M8 14v-2"></path>
+          <path d="M12 14v-5"></path>
+          <path d="M16 14v-8"></path>
+          <polyline points="5 13 9 9 12 11 17 5"></polyline>
+          <polyline points="13 5 17 5 17 9"></polyline>
+        </svg>
+        SkillBridge</a>
+      <div class="nav-links">
+        <a href="job-board.html" class="nav-link">Find Jobs</a>
+        <a href="map-search.html" class="nav-link active">Map Search</a>
+        <a href="worker-board.html" class="nav-link">Find Workers</a>
+      </div>
+      <div class="nav-actions" id="nav-actions">
+        <a href="auth.html" class="btn btn-text">Sign In</a>
+        <a href="auth.html?role=employer" class="btn btn-primary">Post a Job</a>
+      </div>
+      <button class="theme-toggle" aria-label="Toggle Theme"></button>
+    </div>
+  </nav>
+
+  <!-- Map Search Layout -->
+  <div class="map-search-layout">
+
+    <!-- Left Panel: Filters + Job Cards -->
+    <div class="map-panel" id="map-panel">
+
+      <!-- Panel Header -->
+      <div class="map-panel-header">
+        <div class="map-panel-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <span>Jobs Near You</span>
+          <span class="map-panel-count" id="map-results-count">Loading…</span>
+        </div>
+        <!-- Collapse toggle (mobile) -->
+        <button class="map-panel-toggle" id="panel-toggle" aria-label="Toggle panel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+      </div>
+
+      <!-- Filters -->
+      <div class="map-filters" id="map-filters">
+        <div class="map-search-input-wrap">
+          <svg class="map-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="map-keyword" placeholder="Keyword, trade, location…" class="map-search-input-field" />
+        </div>
+
+        <div class="map-filter-chips" id="trade-chips">
+          <button class="map-chip map-chip--active" data-trade="">All</button>
+          <button class="map-chip" data-trade="Electrician">⚡ Electrician</button>
+          <button class="map-chip" data-trade="Plumber">🔧 Plumber</button>
+          <button class="map-chip" data-trade="Carpenter">🪚 Carpenter</button>
+          <button class="map-chip" data-trade="Mason">🧱 Mason</button>
+          <button class="map-chip" data-trade="Painter">🖌️ Painter</button>
+          <button class="map-chip" data-trade="Driver">🚛 Driver</button>
+          <button class="map-chip" data-trade="Welder">🔥 Welder</button>
+        </div>
+      </div>
+
+      <!-- Job Cards List -->
+      <div class="map-jobs-list" id="map-jobs-list">
+        <!-- Populated by JS -->
+        <div class="map-job-skeleton"></div>
+        <div class="map-job-skeleton"></div>
+        <div class="map-job-skeleton"></div>
+      </div>
+    </div>
+
+    <!-- Right: Google Map -->
+    <div class="map-container" id="map-container">
+      <!-- Map Location pill -->
+      <div class="map-location-pill" id="map-location-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span id="map-location-text">Boisar, Maharashtra</span>
+        <button class="map-location-btn" id="detect-location-btn" title="Use my location">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/><path d="m4.93 4.93 1.41 1.41M17.66 17.66l1.41 1.41M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+          Detect
+        </button>
+      </div>
+
+      <!-- View toggle -->
+      <div class="map-view-toggle" id="map-view-toggle">
+        <button class="map-view-btn map-view-btn--active" data-view="map" id="btn-map-view">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+          Map
+        </button>
+        <button class="map-view-btn" data-view="satellite" id="btn-satellite-view">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+          Satellite
+        </button>
+      </div>
+
+      <!-- The Google Maps Iframe -->
+      <iframe
+        id="google-map-iframe"
+        class="google-map-frame"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4855.587941270407!2d72.75787120523606!3d19.7995042414549!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be71f2237db99d7%3A0xcf48f0b9f3e335d4!2sBlugent%20Residency!5e1!3m2!1sen!2sin!4v1775367235582!5m2!1sen!2sin"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="SkillBridge Job Map - Boisar, Maharashtra"
+      ></iframe>
+
+      <!-- Map watermark overlay -->
+      <div class="map-brand-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        SkillBridge Map
+      </div>
+    </div>
+  </div>
+
+  <!-- Job Detail Drawer (same pattern as job-board) -->
+  <div class="drawer-overlay" id="job-drawer-overlay">
+    <div class="drawer-panel" id="job-drawer">
+      <button class="drawer-close" id="job-drawer-close">&times;</button>
+      <div id="drawer-content"><!-- Populated via JS --></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/map-search.js"></script>
+</body>
+</html>

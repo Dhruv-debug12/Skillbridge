@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Job Finder Platform</title>
+  <style>
+    /* ==========================================================================
+       GLOBAL VARIABLES, ACCESSIBILITY, AND STRUCTURAL RESET
+       ========================================================================== */
+    :root {
+      /* Core Brand Palette - Organic & Earthy */
+      --color-forest: #237227;     
+      --color-mint: #519A66;       
+      --color-tangerine: #FFAA00;  
+      --color-peach: #FFD786;      
+      
+      /* Structural Neutral Palette */
+      --color-white: #FFFFFF;
+      --color-off-white: #F8FAFC;
+      --color-gray-border: #E2E8F0;
+      --color-gray-text: #4A5568;
+      
+      /* Typography Variables */
+      --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+      
+      /* Spatial & Interaction Variables */
+      --shadow-subtle: 0 4px 6px rgba(35, 114, 39, 0.06);
+      --border-radius-sm: 8px;
+      --border-radius-md: 12px;
+      --border-radius-pill: 50px;
+      --transition-fluid: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-primary);
+      background-color: var(--color-off-white);
+      color: var(--color-forest);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--color-forest);
+      margin-bottom: 1rem;
+    }
+
+    p { color: var(--color-gray-text); margin-bottom: 1.5rem; }
+    a { text-decoration: none; color: var(--color-forest); }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+    /* ==========================================================================
+       HERO SECTION & SPLIT-SCREEN MECHANICS
+       ========================================================================== */
+   .hero-split-container {
+      display: flex;
+      min-height: 80vh;
+      width: 100%;
+      background-color: var(--color-forest);
+      overflow: hidden;
+    }
+
+   .hero-content-pane {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5rem 4rem;
+      position: relative;
+      z-index: 10;
+    }
+
+   .hero-text-wrapper { max-width: 650px; width: 100%; }
+
+   .hero-badge {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      background-color: rgba(255, 215, 134, 0.15);
+      color: var(--color-peach);
+      font-weight: 700;
+      font-size: 0.875rem;
+      border-radius: var(--border-radius-pill);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(255, 215, 134, 0.3);
+    }
+
+   .hero-title {
+      font-size: clamp(2.5rem, 5vw, 4.5rem); 
+      color: var(--color-white);
+      margin-bottom: 1.5rem;
+    }
+
+   .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--color-peach);
+      margin-bottom: 3.5rem;
+      max-width: 90%;
+    }
+
+   .hero-media-pane {
+      flex: 1;
+      position: relative;
+      background-color: var(--color-mint); /* Fallback if image fails */
+      background-image: url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=1000');
+      background-size: cover;
+      background-position: center;
+    }
+
+   .hero-media-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to right, var(--color-forest) 0%, rgba(35, 114, 39, 0.1) 100%);
+    }
+
+    /* ==========================================================================
+       MASTER SEARCH BAR COMPONENT
+       ========================================================================== */
+   .master-search-form {
+      display: flex;
+      align-items: center;
+      background: var(--color-white);
+      border-radius: var(--border-radius-pill);
+      padding: 0.5rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+      transition: box-shadow var(--transition-fluid), transform var(--transition-fluid);
+      width: 100%;
+    }
+
+   .master-search-form:focus-within {
+      transform: translateY(-2px);
+      box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.3);
+    }
+
+   .search-input-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem 1.5rem;
+    }
+
+   .search-input-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-mint);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+   .search-input-group input {
+      border: none; outline: none;
+      font-family: var(--font-primary);
+      font-size: 1.05rem;
+      color: var(--color-forest);
+      width: 100%;
+      background: transparent;
+    }
+
+   .search-divider {
+      width: 1px; height: 40px;
+      background-color: var(--color-gray-border);
+    }
+
+   .btn-primary-search {
+      background-color: var(--color-tangerine);
+      color: var(--color-forest);
+      padding: 1.2rem 2.5rem;
+      border-radius: var(--border-radius-pill);
+      font-weight: 700;
+      font-size: 1.05rem;
+      transition: background-color var(--transition-fluid), transform 0.2s ease;
+      white-space: nowrap;
+    }
+
+   .btn-primary-search:hover {
+      background-color: #E69900;
+      transform: scale(1.02);
+    }
+
+    /* Target area for search results via JS */
+    #job-results-area {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+    }
+   .job-result-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-gray-border);
+      padding: 1.5rem;
+      border-radius: var(--border-radius-md);
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--color-mint);
+    }
+
+    /* ==========================================================================
+       WORKER PROFILE STYLES & AVAILABILITY GRID
+       ========================================================================== */
+   .dashboard-container {
+      max-width: 1200px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+   .section-label { margin-bottom: 2rem; border-bottom: 2px solid var(--color-peach); padding-bottom: 0.5rem; display: inline-block; }
+
+   .profile-header-card {
+      display: flex; gap: 3rem;
+      background-color: var(--color-white);
+      padding: 3rem;
+      border-radius: var(--border-radius-md);
+      box-shadow: var(--shadow-subtle);
+      margin-bottom: 2.5rem;
+      align-items: center;
+      border: 1px solid var(--color-gray-border);
+    }
+
+   .profile-avatar {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--color-peach);
+      background-color: var(--color-mint); /* Fallback */
+    }
+
+   .profile-name { font-size: 2.5rem; margin-bottom: 0.25rem; }
+   .profile-specialty { color: var(--color-mint); font-size: 1.25rem; margin-bottom: 1rem; }
+
+   .btn-contact-worker {
+      background-color: var(--color-forest);
+      color: var(--color-white);
+      padding: 0.8rem 1.8rem;
+      border-radius: var(--border-radius-sm);
+      font-weight: 600;
+      margin-right: 1rem;
+    }
+   .btn-contact-worker:hover { background-color: var(--color-mint); }
+
+   .btn-download-resume {
+      border: 2px solid var(--color-mint);
+      color: var(--color-forest);
+      padding: 0.8rem 1.8rem;
+      border-radius: var(--border-radius-sm);
+      font-weight: 600;
+    }
+
+   .profile-data-grid {
+      display: grid;
+      grid-template-columns: 1fr 2.5fr;
+      gap: 2.5rem;
+    }
+
+   .data-card {
+      background: var(--color-white);
+      border-radius: var(--border-radius-md);
+      padding: 2.5rem;
+      border: 1px solid var(--color-gray-border);
+      margin-bottom: 2.5rem;
+    }
+
+   .card-title { font-size: 1.25rem; border-bottom: 2px solid var(--color-peach); padding-bottom: 0.75rem; margin-bottom: 1.5rem; }
+
+   .competency-tag-list { display: flex; flex-wrap: wrap; gap: 0.75rem; list-style: none; }
+   .competency-tag {
+      background-color: var(--color-off-white);
+      color: var(--color-forest);
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius-pill);
+      font-size: 0.85rem; font-weight: 600;
+      border: 1px solid var(--color-gray-border);
+    }
+
+    /* CSS Grid Availability Matrix */
+   .availability-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+   .grid-header { font-weight: 700; color: var(--color-forest); padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-gray-border); font-size: 0.9rem; }
+    
+   .time-slot { padding: 0.8rem 0.25rem; border-radius: var(--border-radius-sm); font-size: 0.8rem; font-weight: 600; cursor: default; }
+   .status-available { background-color: rgba(81, 154, 102, 0.15); color: var(--color-forest); border: 1px solid var(--color-mint); }
+   .status-booked { background-color: rgba(255, 170, 0, 0.15); color: #B37700; border: 1px solid var(--color-tangerine); }
+   .status-unavailable { background-color: var(--color-gray-border); color: var(--color-gray-text); }
+
+    /* ==========================================================================
+       ABOUT & IMPACT SECTION
+       ========================================================================== */
+   .community-impact-section {
+      background-color: var(--color-forest);
+      color: var(--color-white);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+   .impact-title { color: var(--color-white); font-size: 2.5rem; }
+   .impact-subtitle { color: var(--color-peach); font-size: 1.2rem; margin-bottom: 3rem; }
+    
+   .kpi-grid {
+      display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap;
+    }
+   .kpi-card { display: flex; flex-direction: column; }
+   .kpi-number { color: var(--color-tangerine); font-size: 3.5rem; font-weight: 700; line-height: 1; margin-bottom: 0.5rem; }
+   .kpi-label { color: var(--color-white); font-size: 1.1rem; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+     .hero-split-container { flex-direction: column; }
+     .hero-content-pane { padding: 4rem 2rem; order: 2; }
+     .hero-media-pane { min-height: 40vh; order: 1; }
+     .hero-media-overlay { background: linear-gradient(to bottom, rgba(35, 114, 39, 0) 0%, var(--color-forest) 100%); }
+     .profile-data-grid { grid-template-columns: 1fr; }
+     .profile-header-card { flex-direction: column; text-align: center; }
+    }
+    @media (max-width: 768px) {
+     .master-search-form { flex-direction: column; padding: 1rem; border-radius: var(--border-radius-md); }
+     .search-divider { width: 100%; height: 1px; margin: 0.5rem 0; }
+     .btn-primary-search { width: 100%; margin-top: 1rem; }
+     .availability-grid { overflow-x: auto; padding-bottom: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero-split-container">
+    <div class="hero-content-pane">
+      <div class="hero-text-wrapper">
+        <span class="hero-badge">Your Local Community Hub</span>
+        <h1 class="hero-title">Find meaningful work, right in your neighborhood.</h1>
+        <p class="hero-subtitle">
+          Connect directly with local businesses and skilled professionals. 
+          No generic listings. Just authentic opportunities in your community.
+        </p>
+        
+        <div class="hero-search-wrapper">
+          <form id="local-job-search" class="master-search-form">
+            <div class="search-input-group">
+              <label for="search-keyword">What</label>
+              <input type="text" id="search-keyword" placeholder="Job title or skill" autocomplete="off">
+            </div>
+            
+            <div class="search-divider"></div>
+            
+            <div class="search-input-group">
+              <label for="search-location">Where</label>
+              <input type="text" id="search-location" placeholder="City or zip code" autocomplete="off">
+            </div>
+            
+            <button type="submit" class="btn-primary-search">Search Jobs</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="hero-media-pane">
+      <div class="hero-media-overlay"></div>
+    </div>
+  </header>
+
+  <div id="job-results-area"></div>
+
+  <main class="dashboard-container">
+    <h2 class="section-label">Worker Profile Preview</h2>
+    
+    <header class="profile-header-card">
+      <div class="profile-avatar-wrapper">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300" alt="Portrait" class="profile-avatar">
+      </div>
+      
+      <div class="profile-identity-data">
+        <h1 class="profile-name">Elena Rodriguez</h1>
+        <h2 class="profile-specialty">Master Electrician & Smart Home Specialist</h2>
+        <p style="margin-bottom: 1.5rem;">North Suburbs (Available within 15 miles) • Identity & License Verified</p>
+        
+        <div class="profile-action-row">
+          <button class="btn-contact-worker">Message Elena</button>
+          <button class="btn-download-resume">Download Portfolio</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="profile-data-grid">
+      <aside class="profile-sidebar">
+        <section class="data-card skills-card">
+          <h3 class="card-title">Technical Expertise</h3>
+          <ul class="competency-tag-list">
+            <li class="competency-tag">Commercial Wiring</li>
+            <li class="competency-tag">Smart Home Automation</li>
+            <li class="competency-tag">OSHA 30 Certified</li>
+            <li class="competency-tag">Blueprint Reading</li>
+          </ul>
+        </section>
+      </aside>
+
+      <section class="profile-main-feed">
+        <section class="data-card schedule-card">
+          <h3 class="card-title">Weekly Availability Matrix</h3>
+          <p style="font-size: 0.9rem; margin-bottom: 1.5rem;">Select a green time slot to propose a booking.</p>
+          
+          <div class="availability-grid">
+            <div class="grid-header">Mon</div>
+            <div class="grid-header">Tue</div>
+            <div class="grid-header">Wed</div>
+            <div class="grid-header">Thu</div>
+            <div class="grid-header">Fri</div>
+            <div class="grid-header">Sat</div>
+            <div class="grid-header">Sun</div>
+            
+            <div class="time-slot status-available">Morning</div>
+            <div class="time-slot status-available">Morning</div>
+            <div class="time-slot status-booked">Booked</div>
+            <div class="time-slot status-available">Morning</div>
+            <div class="time-slot status-available">Morning</div>
+            <div class="time-slot status-unavailable">Off</div>
+            <div class="time-slot status-unavailable">Off</div>
+            
+            <div class="time-slot status-available">Afternoon</div>
+            <div class="time-slot status-booked">Booked</div>
+            <div class="time-slot status-available">Afternoon</div>
+            <div class="time-slot status-available">Afternoon</div>
+            <div class="time-slot status-booked">Booked</div>
+            <div class="time-slot status-unavailable">Off</div>
+            <div class="time-slot status-unavailable">Off</div>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <section class="community-impact-section">
+    <div style="max-width: 1000px; margin: 0 auto;">
+      <h2 class="impact-title">Our Impact on the Local Economy</h2>
+      <p class="impact-subtitle">We measure success not by clicks, but by communities strengthened.</p>
+      
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-number">4,200+</span>
+          <span class="kpi-label">Local Jobs Filled</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-number">850</span>
+          <span class="kpi-label">Partnered Local Businesses</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-number">100%</span>
+          <span class="kpi-label">Locally Verified Workers</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchForm = document.getElementById("local-job-search");
+      const keywordInput = document.getElementById("search-keyword");
+      const locationInput = document.getElementById("search-location");
+      const resultsArea = document.getElementById("job-results-area");
+      
+      // Simulated Local Database payload 
+      const localJobsDatabase =;
+
+      searchForm.addEventListener("submit", (event) => {
+        event.preventDefault(); 
+        
+        const keywordQuery = keywordInput.value.toLowerCase().trim();
+        const locationQuery = locationInput.value.toLowerCase().trim();
+        
+        const filteredResults = localJobsDatabase.filter(job => {
+          const matchesKeyword = job.title.toLowerCase().includes(keywordQuery) |
+
+| job.company.toLowerCase().includes(keywordQuery);
+          const matchesLocation = job.location.toLowerCase().includes(locationQuery);
+          
+          return (keywordQuery === "" |
+
+| matchesKeyword) && (locationQuery === "" |
+| matchesLocation);
+        });
+        
+        renderJobResults(filteredResults);
+      });
+      
+      function renderJobResults(resultsArray) {
+        resultsArea.innerHTML = `<h3 style="margin-bottom: 1rem;">Search Results (${resultsArray.length})</h3>`;
+        
+        if (resultsArray.length === 0) {
+            resultsArea.innerHTML += `<p>No exact matches found. Try broadening your search.</p>`;
+        } else {
+            resultsArray.forEach(job => {
+                resultsArea.innerHTML += `
+                  <div class="job-result-card">
+                    <h4 style="color: var(--color-forest); margin-bottom: 0.25rem;">${job.title}</h4>
+                    <p style="color: var(--color-mint); font-weight: 600; margin-bottom: 0.5rem;">${job.company}</p>
+                    <span class="hero-badge" style="margin-bottom: 0; font-size: 0.75rem;">📍 ${job.location}</span>
+                  </div>
+                `;
+            });
+        }
+        
+        // Scroll down to see results smoothly
+        resultsArea.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  </script>
+</body>
+</html>
